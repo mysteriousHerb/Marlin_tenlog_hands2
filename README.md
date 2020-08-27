@@ -1,3 +1,72 @@
+# My attemp to compile Marlin 2.0.6 for Tenlog D3/hands 2/ whatever.
+
+
+## Things to change when you want to use it
+1. Check the size of your printer and modify at `Configuration.h` . The information can be found at https://github.com/tenlog/TL-D3/blob/master/Marlin/Configuration_zyf.h
+
+```
+// The size of the print bed
+#define X_BED_SIZE 220
+#define Y_BED_SIZE 225
+#define Z_MAX_POS 260
+
+
+#define HOTEND_OFFSET_X { 0.0, 0.00 } // (mm) relative X-offset for each nozzle
+#define HOTEND_OFFSET_Y { 0.0, 4.60 }  // (mm) relative Y-offset for each nozzle
+#define HOTEND_OFFSET_Z { 0.0, 2.00 }  // (mm) relative Z-offset for each nozzle
+
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 792, 92.6, 92.6}
+#define DEFAULT_MAX_FEEDRATE          { 120, 80, 4, 37, 37 }
+#define DEFAULT_MAX_ACCELERATION      { 800, 800, 160, 1600, 1600 }
+#define LIMITED_MAX_ACCEL_EDITING     // Limit edit via M201 or LCD to DEFAULT_MAX_ACCELERATION * 2
+#if ENABLED(LIMITED_MAX_ACCEL_EDITING)
+  #define MAX_ACCEL_EDIT_VALUES       { 6000, 6000, 200, 20000 } // ...or, set your own edit limits
+#endif
+
+#define DEFAULT_ACCELERATION          800    // X, Y, Z and E acceleration for printing moves
+#define DEFAULT_RETRACT_ACCELERATION  3000    // E acceleration for retracts
+#define DEFAULT_TRAVEL_ACCELERATION   1000    // X, Y, Z acceleration for travel (non printing) moves
+
+
+```
+
+2. For the X2_offset it is in `Configuration_adv.h`
+```
+  #define X2_MAX_POS   260       // Set this to the distance between toolheads when both heads are homed
+
+```
+
+3. Check pin settings at `Marlin\src\pins\ramps\pins_TENLOG_D3_HERO.h`
+Specically the following pins seem to swap between different machines, check your own settings.
+
+```
+#define E0_STEP_PIN        57
+#define E0_DIR_PIN         58
+#define E0_ENABLE_PIN      59
+
+#define E1_STEP_PIN        26
+#define E1_DIR_PIN         28
+#define E1_ENABLE_PIN      24
+
+#define TEMP_0_PIN          15   // Analog Input
+#define TEMP_1_PIN          13   // Analog Input
+#define TEMP_BED_PIN        14   // Analog Input
+
+#define HEATER_0_PIN        11
+#define HEATER_1_PIN        10
+#define HEATER_BED_PIN      8
+```
+
+3. I have enabled the linear_advance, and I have to `#define MINIMUM_STEPPER_PULSE 1` to get extruder working.
+
+
+4. The screen doesn't work, you can however change all the settings in the octoprint via gcode. M503 is your friend.  If you know how to get the screen working, please help!
+
+5. I am new to 3d printing. If you know any cool features in Marlin that can/should be enabled, let me know, I can try it. e.g. auto bed levelling? 
+
+--------------------------
+
+
 # Marlin 3D Printer Firmware
 
 ![GitHub](https://img.shields.io/github/license/marlinfirmware/marlin.svg)
